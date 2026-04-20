@@ -1,0 +1,9 @@
+Third-party software notices
+============================
+
+This crate is distributed under the Mozilla Public License, version 2.0.
+The full text of the license is included in the file LICENSE-MPL at the
+root of this repository and is also available at
+https://mozilla.org/MPL/2.0/.
+
+This crate contains no third-party code.

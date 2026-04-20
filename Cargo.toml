@@ -1,0 +1,15 @@
+[package]
+name = "engage2"
+version = "0.1.0"
+edition = "2021"
+license = "MPL-2.0"
+
+[dependencies]
+unity2 = { git = "https://github.com/DivineDragonFanClub/unity2" }
+skyline = "0.6"
+lazysimd = { git = "https://github.com/Raytwo/lazysimd" }
+bitflags = "2"
+
+# Use the local checkout when it exists, fall back to the git dep otherwise
+[patch."https://github.com/DivineDragonFanClub/unity2"]
+unity2 = { path = "../unity2" }
