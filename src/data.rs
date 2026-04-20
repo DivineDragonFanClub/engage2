@@ -1,5 +1,6 @@
 #![allow(unused_imports)]
 
+use unity2::system::List;
 use unity2::{ClassIdentity, Il2CppString};
 
 #[unity2::class(namespace = "App", name = "StructData`1")]
@@ -43,6 +44,12 @@ impl<T: ClassIdentity> StructData<T> {
 
     #[method(name = "TryGetIndex")]
     fn try_get_index(name: Il2CppString) -> i32;
+
+    #[method(name = "GetList")]
+    fn get_list() -> List<T>;
+
+    #[method(name = "GetCount")]
+    fn get_count() -> i32;
 }
 
 #[unity2::class(namespace = "App")]

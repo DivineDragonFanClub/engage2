@@ -214,3 +214,12 @@ impl Proc {
     #[method(name = "Label")]
     fn label(label: i32) -> ProcDesc;
 }
+
+#[unity2::class(namespace = "App", name = "SingletonProcInst`1")]
+pub struct SingletonProcInst<T: ClassIdentity> {}
+
+#[unity2::methods]
+impl<T: ClassIdentity> SingletonProcInst<T> {
+    #[method(name = "get_Instance")]
+    fn instance() -> T;
+}
