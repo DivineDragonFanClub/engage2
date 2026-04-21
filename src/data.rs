@@ -64,3 +64,18 @@ pub struct PersonData {
     #[backing(name = "UnitIconID")]
     pub unit_icon_id: Il2CppString,
 }
+
+#[unity2::methods]
+impl PersonData {
+    #[method(name = "get_AsciiName")]
+    fn ascii_name(self) -> Il2CppString;
+
+    #[method(name = "get_Fid")]
+    fn fid(self) -> Il2CppString;
+
+    #[method(name = "get_Jid")]
+    fn jid(self) -> Il2CppString;
+
+    #[method(name = "get_Name")]
+    fn name(self) -> Il2CppString;
+}
