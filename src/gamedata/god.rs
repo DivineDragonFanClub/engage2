@@ -70,7 +70,7 @@ impl GodPool {
     fn delete_raw(god: GodUnit);
 
     #[method(name = "HasArmlet", args = 0)]
-    fn has_armlet() -> bool;
+    pub fn has_armlet() -> bool;
 }
 
 impl GodPool {

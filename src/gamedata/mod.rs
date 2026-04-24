@@ -1,15 +1,21 @@
 pub mod dispos;
 pub mod god;
+pub mod hubfacility;
 pub mod item;
 pub mod job;
 pub mod reliance;
 pub mod ring;
 pub mod unit;
+pub mod unititem;
+pub mod weaponmask;
 
 pub use dispos::*;
 pub use god::*;
+pub use hubfacility::*;
 pub use item::*;
 pub use job::*;
 pub use reliance::*;
 pub use ring::*;
 pub use unit::*;
+pub use unititem::*;
+pub use weaponmask::*;

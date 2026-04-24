@@ -21,4 +21,7 @@ impl ChapterData {
 
     #[method(name = "get_Field")]
     fn field(self) -> Il2CppString;
+
+    #[method(name = "GetPrefixlessCid", args = 0)]
+    pub fn get_prefixless_cid(self) -> Il2CppString;
 }

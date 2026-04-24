@@ -51,11 +51,15 @@ impl ProcInst {
         name: Il2CppString,
         is_bind: bool,
     ) -> ProcInst;
-}
 
-#[unity2::class(namespace = "App")]
-#[parent(ProcInst)]
-pub struct BasicMenu {}
+    #[method(offset = 0x280A6B0)]
+    pub fn create_bind(
+        self,
+        super_: ProcInst,
+        descs: Array<ProcDesc>,
+        name: Il2CppString,
+    ) -> ProcInst;
+}
 
 #[unity2::class(namespace = "App")]
 pub struct ProcVoidMethod {
@@ -89,16 +93,92 @@ impl ProcVoidMethod {
 
     pub fn from_fn(
         target: IlInstance,
-        callback: extern "C" fn(IlInstance, Option<&'static MethodInfo>),
+        callback: extern "C" fn(IlInstance, unity2::OptionalMethod),
     ) -> Option<Self> {
-        let mi: &'static mut MethodInfo = Box::leak(Box::new(MethodInfo::new()));
-        mi.method_ptr = callback as *mut u8;
-        mi.parameters_count = 0;
+        let mi = unity2::method_info_for_fn(callback as *mut u8, 0);
         Self::from_raw_parts(target, mi)
     }
 }
 
-#[unity2::enumeration(namespace = "", name = "MainSequence.Label")]
+#[unity2::class(namespace = "App")]
+pub struct ProcVoidFunction {
+    #[readonly]
+    pub method_ptr: *mut u8,
+    #[rename(name = "m_target")]
+    #[readonly]
+    pub target: IlInstance,
+    #[readonly]
+    pub method_info: *const MethodInfo,
+}
+
+#[unity2::methods]
+impl ProcVoidFunction {
+    #[method(name = "Invoke", args = 1)]
+    fn invoke(self, inst: ProcInst);
+
+    #[method(name = ".ctor", args = 2)]
+    fn ctor(self, target: IlInstance, method_info: *const MethodInfo);
+}
+
+impl ProcVoidFunction {
+    pub fn from_raw_parts(
+        target: IlInstance,
+        method_info: &'static MethodInfo,
+    ) -> Option<Self> {
+        let instance = <Self as FromIlInstance>::instantiate()?;
+        instance.ctor(target, method_info as *const _);
+        Some(instance)
+    }
+
+    pub fn from_fn(
+        target: IlInstance,
+        callback: extern "C" fn(ProcInst, unity2::OptionalMethod),
+    ) -> Option<Self> {
+        let mi = unity2::method_info_for_fn(callback as *mut u8, 1);
+        Self::from_raw_parts(target, mi)
+    }
+}
+
+#[unity2::class(namespace = "App")]
+pub struct ProcBoolMethod {
+    #[readonly]
+    pub method_ptr: *mut u8,
+    #[rename(name = "m_target")]
+    #[readonly]
+    pub target: IlInstance,
+    #[readonly]
+    pub method_info: *const MethodInfo,
+}
+
+#[unity2::methods]
+impl ProcBoolMethod {
+    #[method(name = "Invoke")]
+    fn invoke(self) -> bool;
+
+    #[method(name = ".ctor", args = 2)]
+    fn ctor(self, target: IlInstance, method_info: *const MethodInfo);
+}
+
+impl ProcBoolMethod {
+    pub fn from_raw_parts(
+        target: IlInstance,
+        method_info: &'static MethodInfo,
+    ) -> Option<Self> {
+        let instance = <Self as FromIlInstance>::instantiate()?;
+        instance.ctor(target, method_info as *const _);
+        Some(instance)
+    }
+
+    pub fn from_fn(
+        target: IlInstance,
+        callback: extern "C" fn(IlInstance, unity2::OptionalMethod) -> bool,
+    ) -> Option<Self> {
+        let mi = unity2::method_info_for_fn(callback as *mut u8, 0);
+        Self::from_raw_parts(target, mi)
+    }
+}
+
+#[unity2::enumeration(namespace = "App", name = "MainSequence.Label")]
 #[repr(i32)]
 pub enum MainSequenceLabel {
     None = 0,
@@ -161,8 +241,23 @@ pub struct ProcDesc {
     pub desc_type: ProcDescType,
 }
 
-// App.Proc is a static-only utility class, Jump(int) and Jump(string) collide under name lookup, so
-// they fall back to raw offsets from dump.cs, the documented escape hatch for overload ambiguity
+impl ProcDesc {
+    pub fn get_label(self) -> i32 {
+        let class = unity2::object_get_class(self);
+        let entry = class
+            .get_virtual_method("get_Label")
+            .expect("ProcDesc vtable missing `get_Label`");
+        let f: extern "C" fn(Self, &'static unity2::MethodInfo) -> i32 =
+            unsafe { std::mem::transmute(entry.method_ptr) };
+        f(self, entry.method_info)
+    }
+
+    #[inline]
+    pub fn get_desc_type_method(self) -> ProcDescType {
+        IProcDesc::desc_type(self)
+    }
+}
+
 #[unity2::class(namespace = "App")]
 pub struct Proc {
     #[static_field]
@@ -200,26 +295,91 @@ impl Proc {
     fn get_root_low() -> ProcInst;
 
     #[method(name = "End")]
-    fn end() -> ProcDesc;
+    pub fn end() -> ProcDesc;
 
     #[method(name = "Halt")]
     fn halt() -> ProcDesc;
 
     #[method(offset = 0x281AD90)]
-    fn jump_int(label: i32) -> ProcDesc;
+    pub fn jump_int(label: i32) -> ProcDesc;
 
     #[method(offset = 0x281AE30)]
-    fn jump_string(label: Il2CppString) -> ProcDesc;
+    pub fn jump_string(label: Il2CppString) -> ProcDesc;
 
-    #[method(name = "Label")]
-    fn label(label: i32) -> ProcDesc;
+    #[method(offset = 0x281AEB0)]
+    pub fn label(label: i32) -> ProcDesc;
+
+    #[method(offset = 0x280A7A0)]
+    pub fn call_method(method: ProcVoidMethod) -> ProcDesc;
+
+    #[method(offset = 0x281B250)]
+    pub fn call_function(function: ProcVoidFunction) -> ProcDesc;
+
+    #[method(offset = 0x280A840)]
+    pub fn wait_while_true(method: ProcBoolMethod) -> ProcDesc;
+
+    #[method(name = "WaitTime", args = 1)]
+    pub fn wait_time(seconds: f32) -> ProcDesc;
+
+    #[method(name = "Vsync", args = 1)]
+    pub fn vsync(mode: i32) -> ProcDesc;
+
+    #[method(name = "WaitIsLoading", args = 0)]
+    pub fn wait_is_loading() -> ProcDesc;
 }
 
 #[unity2::class(namespace = "App", name = "SingletonProcInst`1")]
+#[parent(ProcInst)]
 pub struct SingletonProcInst<T: ClassIdentity> {}
 
 #[unity2::methods]
 impl<T: ClassIdentity> SingletonProcInst<T> {
     #[method(name = "get_Instance")]
     fn instance() -> T;
+}
+
+#[unity2::class(namespace = "App", name = "ProcSceneSequence`1")]
+#[parent(SingletonProcInst<T>, ProcInst)]
+pub struct ProcSceneSequence<T: ClassIdentity> {}
+
+#[unity2::methods]
+impl<T: ClassIdentity> ProcSceneSequence<T> {
+    #[method(name = "get_SceneName")]
+    fn scene_name(self) -> Il2CppString;
+
+    #[method(name = "set_SceneName")]
+    fn set_scene_name(self, value: Il2CppString);
+}
+
+/// Patches a proc's vanilla ProcDesc array by injecting entries at specific positions
+///
+/// Insertions applied in descending position order so callers don't reason about index shift
+pub struct ProcDescPatch {
+    original: Vec<ProcDesc>,
+    patches: Vec<(usize, Vec<ProcDesc>)>,
+}
+
+impl ProcDescPatch {
+    pub fn new(original: Array<ProcDesc>) -> Self {
+        Self {
+            original: original.iter().collect(),
+            patches: Vec::new(),
+        }
+    }
+
+    /// Inject `descs` starting at `position` in the original array
+    pub fn insert(mut self, position: usize, descs: impl IntoIterator<Item = ProcDesc>) -> Self {
+        self.patches.push((position, descs.into_iter().collect()));
+        self
+    }
+
+    /// Apply every queued insertion and materialize the patched array
+    pub fn finish(mut self) -> Array<ProcDesc> {
+        self.patches.sort_by(|a, b| b.0.cmp(&a.0));
+        for (pos, descs) in self.patches {
+            self.original.splice(pos..pos, descs);
+        }
+        Array::<ProcDesc>::from_slice(&self.original)
+            .expect("ProcDescPatch::finish: ProcDesc array allocation failed")
+    }
 }

@@ -1,9 +1,52 @@
 #![allow(unused_imports)]
 
-use unity2::{ClassIdentity, Il2CppString};
+use unity2::system::collections::Dictionary;
+use unity2::{ClassIdentity, Il2CppString, IntPtr};
 
 #[unity2::class(namespace = "App")]
-pub struct Mess {}
+pub struct MsgFile {
+    #[rename(name = "m_reference")]
+    pub reference_count: i32,
+}
+
+#[unity2::methods]
+impl MsgFile {
+    #[method(name = ".ctor", args = 0)]
+    pub fn ctor(self);
+
+    #[method(name = "Load", args = 1)]
+    pub fn load(self, bytes: unity2::Array<u8>);
+
+    #[method(name = "GetTextNum", args = 0)]
+    pub fn get_text_num(self) -> i32;
+
+    #[method(name = "GetLabel", args = 1)]
+    pub fn get_label(self, index: i32) -> Il2CppString;
+
+    #[method(offset = 0x1E97770)]
+    pub fn get_text(self, index: i32) -> IntPtr;
+
+    #[method(name = "GetReference", args = 0)]
+    pub fn get_reference(self) -> i32;
+
+    #[method(name = "SetReference", args = 1)]
+    pub fn set_reference(self, reference: i32);
+}
+
+#[unity2::class(namespace = "App")]
+pub struct Mess {
+    #[static_field]
+    #[rename(name = "s_messFileDictionary")]
+    pub mess_file_dictionary: Dictionary<Il2CppString, MsgFile>,
+
+    #[static_field]
+    #[rename(name = "s_messDataDictionary")]
+    pub mess_data_dictionary: Dictionary<Il2CppString, IntPtr>,
+
+    #[static_field]
+    #[rename(name = "s_pathDictionary")]
+    pub path_dictionary: Dictionary<Il2CppString, Il2CppString>,
+}
 
 #[unity2::methods]
 impl Mess {

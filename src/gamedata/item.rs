@@ -24,4 +24,7 @@ impl ItemData {
 
     #[method(name = "get_Aid")]
     fn aid(self) -> Il2CppString;
+
+    #[method(name = "get_Icon", args = 0)]
+    pub fn icon(self) -> Il2CppString;
 }

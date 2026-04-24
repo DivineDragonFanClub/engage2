@@ -13,7 +13,8 @@ impl GameVariable {
     #[method(name = "GetBool")]
     fn get_bool(self, key: Il2CppString) -> bool;
 
-    #[method(name = "SetBool")]
+    // Set overloads differ only by value type, pin Set(string, bool) by RVA
+    #[method(offset = 0x251ED10)]
     fn set_bool(self, key: Il2CppString, enable: bool);
 
     #[method(name = "GetNumber")]
@@ -28,10 +29,10 @@ impl GameVariable {
     #[method(name = "SetString")]
     fn set_string(self, key: Il2CppString, value: Il2CppString);
 
-    #[method(name = "Entry", args = 2)]
+    #[method(offset = 0x2512870)]
     fn entry(self, key: Il2CppString, num: i32) -> bool;
 
-    #[method(name = "EntryNoRewind", args = 2)]
+    #[method(offset = 0x251E560)]
     fn entry_no_rewind(self, key: Il2CppString, num: i32) -> bool;
 
     #[method(name = "IsExist")]
@@ -76,12 +77,10 @@ impl GameVariableManager {
         Self::variable().set_string(key.into(), value.into());
     }
 
-    // Creates the entry if missing, seeded with `num`. Mirrors the old engage crate's name.
     pub fn make_entry(key: impl Into<Il2CppString>, num: i32) -> bool {
         Self::variable().entry(key.into(), num)
     }
 
-    // Like `make_entry` but marked no-rewind so the save's rewind-tracking won't roll it back.
     pub fn make_entry_norewind(key: impl Into<Il2CppString>, num: i32) -> bool {
         Self::variable().entry_no_rewind(key.into(), num)
     }

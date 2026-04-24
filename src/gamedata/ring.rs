@@ -24,4 +24,7 @@ impl RingData {
 
     #[method(name = "get_RingModel")]
     fn ring_model(self) -> Il2CppString;
+
+    #[method(name = "get_Icon", args = 0)]
+    pub fn icon(self) -> Il2CppString;
 }

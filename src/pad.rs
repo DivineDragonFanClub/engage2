@@ -58,40 +58,43 @@ pub struct Pad {}
 #[unity2::methods]
 impl Pad {
     #[method(name = "IsButton")]
-    fn is_button(buttons: NpadButton) -> bool;
+    pub fn is_button(buttons: NpadButton) -> bool;
 
     #[method(name = "IsTrigger")]
-    fn is_trigger(buttons: NpadButton) -> bool;
+    pub fn is_trigger(buttons: NpadButton) -> bool;
 
     #[method(name = "IsRepeat")]
-    fn is_repeat(buttons: NpadButton) -> bool;
+    pub fn is_repeat(buttons: NpadButton) -> bool;
 
     #[method(name = "IsRelease")]
-    fn is_release(buttons: NpadButton) -> bool;
+    pub fn is_release(buttons: NpadButton) -> bool;
 
     #[method(name = "GetStickLX", args = 0)]
-    fn get_stick_lx() -> f32;
+    pub fn get_stick_lx() -> f32;
     #[method(name = "GetStickLY", args = 0)]
-    fn get_stick_ly() -> f32;
+    pub fn get_stick_ly() -> f32;
     #[method(name = "GetStickRX", args = 0)]
-    fn get_stick_rx() -> f32;
+    pub fn get_stick_rx() -> f32;
     #[method(name = "GetStickRY", args = 0)]
-    fn get_stick_ry() -> f32;
+    pub fn get_stick_ry() -> f32;
 
     #[method(name = "GetStickLX", args = 1)]
-    fn get_stick_lx_dead(allowance: f32) -> f32;
+    pub fn get_stick_lx_dead(allowance: f32) -> f32;
     #[method(name = "GetStickLY", args = 1)]
-    fn get_stick_ly_dead(allowance: f32) -> f32;
+    pub fn get_stick_ly_dead(allowance: f32) -> f32;
     #[method(name = "GetStickRX", args = 1)]
-    fn get_stick_rx_dead(allowance: f32) -> f32;
+    pub fn get_stick_rx_dead(allowance: f32) -> f32;
     #[method(name = "GetStickRY", args = 1)]
-    fn get_stick_ry_dead(allowance: f32) -> f32;
+    pub fn get_stick_ry_dead(allowance: f32) -> f32;
 
     #[method(name = "GetStepCount")]
-    fn get_step_count() -> i32;
+    pub fn get_step_count() -> i32;
     #[method(name = "GetHoldCount")]
-    fn get_hold_count() -> i32;
+    pub fn get_hold_count() -> i32;
 
     #[method(name = "SetEnableControllerSupport")]
-    fn set_enable_controller_support(is_enable: bool);
+    pub fn set_enable_controller_support(is_enable: bool);
+
+    #[method(name = "Vibration", args = 0)]
+    pub fn vibration() -> crate::vibrationmanager::VibrationManager;
 }

@@ -24,7 +24,7 @@ impl BasicDialogItem {
 }
 
 #[unity2::class(namespace = "App")]
-#[parent(BasicDialogItem, BasicMenuItem)]
+#[parent(BasicDialogItem)]
 pub struct BasicDialogItemYes {}
 
 #[unity2::methods]
@@ -51,7 +51,7 @@ impl BasicDialogItemYes {
 }
 
 #[unity2::class(namespace = "App")]
-#[parent(BasicDialogItem, BasicMenuItem)]
+#[parent(BasicDialogItem)]
 pub struct BasicDialogItemNo {}
 
 #[unity2::methods]
@@ -128,7 +128,6 @@ impl YesNoDialog {
         let first_item = BasicDialogItemYes::new(first_text);
         let second_item = BasicDialogItemNo::new(second_text);
 
-        // Clone the classes here so we don't ruin the base class with our custom dialog
         let yes_class = first_item.override_class();
         let no_class = second_item.override_class();
 
@@ -147,7 +146,7 @@ impl YesNoDialog {
 }
 
 #[unity2::class(namespace = "App")]
-#[parent(BasicDialogItemYes, BasicDialogItem, BasicMenuItem)]
+#[parent(BasicDialogItemYes)]
 pub struct YesMenuItem {
     #[rename(name = "YesEventHandler")]
     pub yes_event_handler: Action,
@@ -175,7 +174,7 @@ impl YesMenuItem {
 }
 
 #[unity2::class(namespace = "App")]
-#[parent(BasicMenu, ProcInst)]
+#[parent(BasicMenu)]
 pub struct BasicDialog {}
 
 #[unity2::methods]

@@ -4,7 +4,14 @@ use unity2::system::List;
 use unity2::{ClassIdentity, Il2CppString};
 
 #[unity2::class(namespace = "App", name = "StructData`1")]
-pub struct StructData<T: ClassIdentity> {}
+pub struct StructData<T: ClassIdentity> {
+    #[rename(name = "Index")]
+    pub index: i32,
+    #[rename(name = "Hash")]
+    pub hash: i32,
+    #[rename(name = "Key")]
+    pub key: Il2CppString,
+}
 
 #[unity2::class(namespace = "App", name = "SingletonClass`1")]
 pub struct SingletonClass<T: ClassIdentity> {}
@@ -78,4 +85,7 @@ impl PersonData {
 
     #[method(name = "get_Name")]
     fn name(self) -> Il2CppString;
+
+    #[method(name = "GetJob", args = 0)]
+    pub fn job(self) -> crate::gamedata::job::JobData;
 }
