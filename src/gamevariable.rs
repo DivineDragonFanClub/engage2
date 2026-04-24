@@ -1,5 +1,6 @@
 #![allow(unused_imports)]
 
+use unity2::system::collections::List;
 use unity2::{ClassIdentity, Il2CppString};
 
 use crate::data::ISingletonClassMethods;
@@ -43,6 +44,9 @@ impl GameVariable {
 
     #[method(name = "Remove")]
     fn remove(self, key: Il2CppString) -> bool;
+
+    #[method(name = "FindStartsWith")]
+    fn find_starts_with(self, name: Il2CppString) -> List<Il2CppString>;
 }
 
 pub struct GameVariableManager;
@@ -95,5 +99,9 @@ impl GameVariableManager {
 
     pub fn remove(key: impl Into<Il2CppString>) -> bool {
         Self::variable().remove(key.into())
+    }
+
+    pub fn find_starts_with(prefix: impl Into<Il2CppString>) -> List<Il2CppString> {
+        Self::variable().find_starts_with(prefix.into())
     }
 }

@@ -283,16 +283,16 @@ impl Proc {
     fn kill_by_bind(bound: ProcInst);
 
     #[method(name = "GetRoot")]
-    fn get_root(root_type: i32) -> ProcInst;
+    pub fn get_root(root_type: i32) -> ProcInst;
 
     #[method(name = "GetRootHi")]
-    fn get_root_hi() -> ProcInst;
+    pub fn get_root_hi() -> ProcInst;
 
     #[method(name = "GetRootDef")]
-    fn get_root_def() -> ProcInst;
+    pub fn get_root_def() -> ProcInst;
 
     #[method(name = "GetRootLow")]
-    fn get_root_low() -> ProcInst;
+    pub fn get_root_low() -> ProcInst;
 
     #[method(name = "End")]
     pub fn end() -> ProcDesc;
