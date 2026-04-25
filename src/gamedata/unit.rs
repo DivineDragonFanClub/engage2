@@ -22,22 +22,22 @@ pub struct Unit {
 #[unity2::methods]
 impl Unit {
     #[method(name = "get_Person")]
-    fn person(self) -> PersonData;
+    pub fn person(self) -> PersonData;
 
     #[method(name = "get_Job")]
-    fn job(self) -> JobData;
+    pub fn job(self) -> JobData;
 
     #[method(name = "get_GodUnit")]
-    fn god_unit(self) -> GodUnit;
+    pub fn god_unit(self) -> GodUnit;
 
     #[method(name = "get_Hp")]
-    fn hp(self) -> i32;
+    pub fn hp(self) -> i32;
 
     #[method(name = "get_Level")]
-    fn level(self) -> u8;
+    pub fn level(self) -> u8;
 
     #[method(name = "get_Ident")]
-    fn ident(self) -> i32;
+    pub fn ident(self) -> i32;
 
     #[method(name = "get_IsEngaging", args = 0)]
     pub fn is_engaging(self) -> bool;

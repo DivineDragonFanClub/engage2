@@ -268,19 +268,19 @@ pub struct Proc {
 #[unity2::methods]
 impl Proc {
     #[method(name = "Initialize")]
-    fn initialize();
+    pub fn initialize();
 
     #[method(name = "Sweep")]
-    fn sweep();
+    pub fn sweep();
 
     #[method(name = "FindByName")]
-    fn find_by_name(name: Option<&Il2CppString>) -> ProcInst;
+    pub fn find_by_name(name: Option<&Il2CppString>) -> ProcInst;
 
     #[method(name = "KillByName")]
-    fn kill_by_name(name: Option<&Il2CppString>);
+    pub fn kill_by_name(name: Option<&Il2CppString>);
 
     #[method(name = "KillByBind")]
-    fn kill_by_bind(bound: ProcInst);
+    pub fn kill_by_bind(bound: ProcInst);
 
     #[method(name = "GetRoot")]
     pub fn get_root(root_type: i32) -> ProcInst;
@@ -298,7 +298,7 @@ impl Proc {
     pub fn end() -> ProcDesc;
 
     #[method(name = "Halt")]
-    fn halt() -> ProcDesc;
+    pub fn halt() -> ProcDesc;
 
     #[method(offset = 0x281AD90)]
     pub fn jump_int(label: i32) -> ProcDesc;
@@ -335,7 +335,7 @@ pub struct SingletonProcInst<T: ClassIdentity> {}
 #[unity2::methods]
 impl<T: ClassIdentity> SingletonProcInst<T> {
     #[method(name = "get_Instance")]
-    fn instance() -> T;
+    pub fn instance() -> T;
 }
 
 #[unity2::class(namespace = "App", name = "ProcSceneSequence`1")]
@@ -345,10 +345,10 @@ pub struct ProcSceneSequence<T: ClassIdentity> {}
 #[unity2::methods]
 impl<T: ClassIdentity> ProcSceneSequence<T> {
     #[method(name = "get_SceneName")]
-    fn scene_name(self) -> Il2CppString;
+    pub fn scene_name(self) -> Il2CppString;
 
     #[method(name = "set_SceneName")]
-    fn set_scene_name(self, value: Il2CppString);
+    pub fn set_scene_name(self, value: Il2CppString);
 }
 
 /// Patches a proc's vanilla ProcDesc array by injecting entries at specific positions

@@ -19,7 +19,7 @@ pub struct SingletonClass<T: ClassIdentity> {}
 #[unity2::methods]
 impl<T: ClassIdentity> SingletonClass<T> {
     #[method(name = "get_Instance")]
-    fn instance() -> T;
+    pub fn instance() -> T;
 }
 
 #[unity2::enumeration]
@@ -35,28 +35,28 @@ pub enum Gender {
 #[unity2::methods]
 impl<T: ClassIdentity> StructData<T> {
     #[method(name = "Get")]
-    fn get(name: Il2CppString) -> T;
+    pub fn get(name: Il2CppString) -> T;
 
     #[method(name = "TryGet", args = 1)]
-    fn try_get(name: Il2CppString) -> T;
+    pub fn try_get(name: Il2CppString) -> T;
 
     #[method(name = "TryGetFromHash")]
-    fn try_get_from_hash(hash: i32) -> T;
+    pub fn try_get_from_hash(hash: i32) -> T;
 
     #[method(name = "UnsafeGet")]
-    fn unsafe_get(index: i32) -> T;
+    pub fn unsafe_get(index: i32) -> T;
 
     #[method(name = "GetIndex")]
-    fn get_index(name: Il2CppString) -> i32;
+    pub fn get_index(name: Il2CppString) -> i32;
 
     #[method(name = "TryGetIndex")]
-    fn try_get_index(name: Il2CppString) -> i32;
+    pub fn try_get_index(name: Il2CppString) -> i32;
 
     #[method(name = "GetList")]
-    fn get_list() -> List<T>;
+    pub fn get_list() -> List<T>;
 
     #[method(name = "GetCount")]
-    fn get_count() -> i32;
+    pub fn get_count() -> i32;
 }
 
 #[unity2::class(namespace = "App")]
@@ -75,16 +75,16 @@ pub struct PersonData {
 #[unity2::methods]
 impl PersonData {
     #[method(name = "get_AsciiName")]
-    fn ascii_name(self) -> Il2CppString;
+    pub fn ascii_name(self) -> Il2CppString;
 
     #[method(name = "get_Fid")]
-    fn fid(self) -> Il2CppString;
+    pub fn fid(self) -> Il2CppString;
 
     #[method(name = "get_Jid")]
-    fn jid(self) -> Il2CppString;
+    pub fn jid(self) -> Il2CppString;
 
     #[method(name = "get_Name")]
-    fn name(self) -> Il2CppString;
+    pub fn name(self) -> Il2CppString;
 
     #[method(name = "GetJob", args = 0)]
     pub fn job(self) -> crate::gamedata::job::JobData;
