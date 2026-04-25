@@ -375,7 +375,7 @@ impl ProcDescPatch {
 
     /// Apply every queued insertion and materialize the patched array
     pub fn finish(mut self) -> Array<ProcDesc> {
-        self.patches.sort_by(|a, b| b.0.cmp(&a.0));
+        self.patches.sort_by_key(|patch| std::cmp::Reverse(patch.0));
         for (pos, descs) in self.patches {
             self.original.splice(pos..pos, descs);
         }

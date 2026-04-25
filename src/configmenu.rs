@@ -126,6 +126,12 @@ pub trait ConfigBasicMenuItemGaugeMethods {
     }
 }
 
+impl Default for ConfigBasicMenuItem {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl ConfigBasicMenuItem {
     pub fn new() -> Self {
         let item = <Self as FromIlInstance>::instantiate()

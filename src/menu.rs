@@ -75,6 +75,12 @@ pub trait BasicMenuItemMethods {
     }
 }
 
+impl Default for BasicMenuItem {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl BasicMenuItem {
     pub fn new() -> Self {
         let item = <Self as unity2::FromIlInstance>::instantiate()
