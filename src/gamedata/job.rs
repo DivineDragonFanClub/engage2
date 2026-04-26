@@ -23,9 +23,9 @@ pub struct JobData {
     pub unit_icon_weapon_id: Il2CppString,
     #[backing]
     pub rank: i32,
-    #[backing(name = "MaxLevel")]
+    #[backing]
     pub max_level: u8,
-    #[backing(name = "InternalLevel")]
+    #[backing]
     pub internal_level: i8,
     #[backing]
     pub sort: u16,
