@@ -56,6 +56,24 @@ impl Mess {
     #[method(name = "Load", args = 1)]
     fn load_raw(file_name: Il2CppString) -> bool;
 
+    #[method(name = "TryLoad", args = 1)]
+    fn try_load_raw(file_name: Il2CppString) -> bool;
+
+    #[method(name = "Free", args = 1)]
+    fn free_raw(file_name: Il2CppString) -> bool;
+
+    #[method(name = "TryFree", args = 1)]
+    fn try_free_raw(file_name: Il2CppString) -> bool;
+
+    #[method(name = "IsExist", args = 1)]
+    fn is_exist_raw(label: Il2CppString) -> bool;
+
+    #[method(name = "IsLoadDone", args = 1)]
+    fn is_load_done_raw(file_name: Il2CppString) -> bool;
+
+    #[method(name = "IsFileExist", args = 1)]
+    fn is_file_exist_raw(file_name: Il2CppString) -> bool;
+
     #[method(name = "GetLanguageDirectoryName", args = 0)]
     fn get_language_directory_name_raw() -> Il2CppString;
 
@@ -72,6 +90,36 @@ impl Mess {
     #[inline]
     pub fn load(file_name: impl Into<Il2CppString>) -> bool {
         Self::load_raw(file_name.into())
+    }
+
+    #[inline]
+    pub fn try_load(file_name: impl Into<Il2CppString>) -> bool {
+        Self::try_load_raw(file_name.into())
+    }
+
+    #[inline]
+    pub fn free(file_name: impl Into<Il2CppString>) -> bool {
+        Self::free_raw(file_name.into())
+    }
+
+    #[inline]
+    pub fn try_free(file_name: impl Into<Il2CppString>) -> bool {
+        Self::try_free_raw(file_name.into())
+    }
+
+    #[inline]
+    pub fn is_exist(label: impl Into<Il2CppString>) -> bool {
+        Self::is_exist_raw(label.into())
+    }
+
+    #[inline]
+    pub fn is_load_done(file_name: impl Into<Il2CppString>) -> bool {
+        Self::is_load_done_raw(file_name.into())
+    }
+
+    #[inline]
+    pub fn is_file_exist(file_name: impl Into<Il2CppString>) -> bool {
+        Self::is_file_exist_raw(file_name.into())
     }
 
     #[inline]
