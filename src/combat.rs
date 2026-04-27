@@ -4,8 +4,7 @@ use unity2::engine::color::Color;
 use unity2::system::collections::List;
 use unity2::{Array, ClassIdentity, Il2CppString, OptionalMethod};
 
-use crate::data::PersonData;
-use crate::gamedata::{JobData, unit::Unit};
+use crate::gamedata::{JobData, PersonData, unit::Unit};
 
 bitflags::bitflags! {
     #[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]

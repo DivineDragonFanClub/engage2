@@ -22,16 +22,6 @@ impl<T: ClassIdentity> SingletonClass<T> {
     pub fn instance() -> T;
 }
 
-#[unity2::enumeration]
-#[repr(i32)]
-pub enum Gender {
-    None = 0,
-    Male = 1,
-    Female = 2,
-    Other = 3,
-    Num = 4,
-}
-
 #[unity2::methods]
 impl<T: ClassIdentity> StructData<T> {
     #[method(name = "Get")]
@@ -57,35 +47,4 @@ impl<T: ClassIdentity> StructData<T> {
 
     #[method(name = "GetCount")]
     pub fn get_count() -> i32;
-}
-
-#[unity2::class(namespace = "App")]
-#[parent(StructData<PersonData>)]
-pub struct PersonData {
-    #[backing]
-    pub pid: Il2CppString,
-    #[backing]
-    pub gender: Gender,
-    #[backing]
-    pub level: u8,
-    #[backing(name = "UnitIconID")]
-    pub unit_icon_id: Il2CppString,
-}
-
-#[unity2::methods]
-impl PersonData {
-    #[method(name = "get_AsciiName")]
-    pub fn ascii_name(self) -> Il2CppString;
-
-    #[method(name = "get_Fid")]
-    pub fn fid(self) -> Il2CppString;
-
-    #[method(name = "get_Jid")]
-    pub fn jid(self) -> Il2CppString;
-
-    #[method(name = "get_Name")]
-    pub fn name(self) -> Il2CppString;
-
-    #[method(name = "GetJob", args = 0)]
-    pub fn job(self) -> crate::gamedata::job::JobData;
 }
