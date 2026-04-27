@@ -4,8 +4,7 @@ use unity2::engine::object::Sprite;
 use unity2::system::collections::Dictionary;
 use unity2::{ClassIdentity, Il2CppString};
 
-use crate::data::PersonData;
-use crate::gamedata::{GodData, ring::RingData, unit::Unit};
+use crate::gamedata::{GodData, PersonData, ring::RingData, unit::Unit};
 
 #[unity2::class(namespace = "App")]
 pub struct SpriteAtlasManager {

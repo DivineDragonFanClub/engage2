@@ -6,7 +6,16 @@ use crate::data::{IStructData, IStructDataMethods, StructData};
 
 #[unity2::class(namespace = "App")]
 #[parent(StructData<RelianceData>)]
-pub struct RelianceData {}
+pub struct RelianceData {
+    #[backing] pub pid: Il2CppString,
+    #[backing] pub exp_types: Array<u8>,
+}
+
+impl RelianceData {
+    pub const NO_SUPPORT: u8 = 0;
+    pub const MAX_EXP: i32 = 100;
+    pub const MAX_DATA: i32 = 42;
+}
 
 #[unity2::methods]
 impl RelianceData {
@@ -52,4 +61,15 @@ impl RelianceExpData {
 
     #[method(name = "set_ExpA")]
     fn set_exp_a(self, value: u8);
+}
+
+#[unity2::enumeration(namespace = "", name = "RelianceData.Level")]
+#[repr(i32)]
+pub enum RelianceDataLevel {
+    None = 0,
+    C = 1,
+    B = 2,
+    A = 3,
+    APlus = 4,
+    Num = 5,
 }

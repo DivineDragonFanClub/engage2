@@ -5,7 +5,7 @@ use unity2::{ClassIdentity, IlInstance, Il2CppString};
 use super::god::GodUnit;
 use super::item::ItemData;
 use super::job::JobData;
-use crate::data::PersonData;
+use crate::gamedata::person::PersonData;
 
 #[unity2::class(namespace = "App")]
 pub struct Unit {

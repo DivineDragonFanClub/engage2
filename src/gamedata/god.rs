@@ -1,14 +1,74 @@
 #![allow(unused_imports)]
 
+use unity2::system::Dictionary;
 use unity2::system::collections::List;
-use unity2::{Array, ClassIdentity, Il2CppString};
+use unity2::{Array, Class, ClassIdentity, Il2CppString};
 
+use crate::{ItemDataKinds, Unit};
+use crate::bit::{
+    BitFieldCommon, BitField32, BitFieldTemplate32,
+    IBitFieldCommon, IBitField32, IBitFieldTemplate32,
+};
+use crate::capability::CapabilitySbyte;
 use crate::data::{IStructData, IStructDataMethods, StructData};
 use crate::proc::ProcInst;
+use crate::unitpool::ForceType;
 
 #[unity2::class(namespace = "App")]
 #[parent(StructData<GodData>)]
-pub struct GodData {}
+pub struct GodData {
+    #[backing] pub gid: Il2CppString,
+    #[backing] pub mid: Il2CppString,
+    #[backing] pub nickname: Il2CppString,
+    #[backing] pub help: Il2CppString,
+    #[backing(name = "SoundID")] pub sound_id: Il2CppString,
+    #[backing(name = "AssetID")] pub asset_id: Il2CppString,
+    #[backing] pub face_icon_name: Il2CppString,
+    #[backing] pub face_icon_name_darkness: Il2CppString,
+    #[backing] pub ringname: Il2CppString,
+    #[backing] pub ringhelp: Il2CppString,
+    #[backing(name = "UnitIconID")] pub unit_icon_id: Il2CppString,
+    #[backing] pub change: Array<Il2CppString>,
+    #[backing] pub link: Il2CppString,
+    #[backing] pub engage_haunt: Il2CppString,
+    #[backing] pub level: i32,
+    #[backing] pub force_type: ForceType,
+    #[backing] pub female: i8,
+    #[backing] pub good_weapon: ItemDataKinds,
+    #[backing] pub sort: i16,
+    #[backing] pub engage_count: u8,
+    #[backing] pub engage_attack: Il2CppString,
+    #[backing] pub engage_attack_rampage: Il2CppString,
+    #[backing] pub engage_attack_link: Il2CppString,
+    #[backing] pub link_gid: Il2CppString,
+    #[backing] pub gbid: Il2CppString,
+    #[backing] pub grow_table: Il2CppString,
+    #[backing] pub level_cap: u8,
+    #[backing] pub unlock_level_cap_var_name: Il2CppString,
+    #[backing] pub engrave_word: Il2CppString,
+    #[backing] pub engrave_power: i8,
+    #[backing] pub engrave_weight: i8,
+    #[backing] pub engrave_hit: i8,
+    #[backing] pub engrave_critical: i8,
+    #[backing] pub engrave_avoid: i8,
+    #[backing] pub engrave_secure: i8,
+    #[backing] pub synchro_enhance: CapabilitySbyte,
+    #[backing] pub main_data: GodData,
+    #[backing] pub change_data: Array<GodData>,
+    #[backing] pub ascii_name: Il2CppString,
+    #[backing] pub flag: GodDataFlagField,
+    #[backing] pub net_ranking_index: u8,
+    #[backing] pub hero_face_icon_name: Il2CppString,
+    #[backing] pub heroine_face_icon_name: Il2CppString,
+    #[backing(name = "AIEngageAttackType")]
+    pub ai_engage_attack_type: GodDataAIEngageAttackTypes,
+    #[rename(name = "m_EngageHauntUnit")]
+    pub engage_haunt_unit: Unit,
+
+    #[static_field]
+    #[rename(name = "s_LinkDics")]
+    pub link_dics: Dictionary<Il2CppString, GodData>,
+}
 
 #[unity2::methods]
 impl GodData {
@@ -92,4 +152,56 @@ impl GodPool {
     pub fn delete(god: GodUnit) {
         Self::delete_raw(god);
     }
+}
+
+#[unity2::enumeration(namespace = "", name = "GodData.AIEngageAttackType")]
+#[repr(i32)]
+pub enum GodDataAIEngageAttackTypes {
+    None = 0,
+    Attack = 1,
+    AttackPierce = 2,
+    AttackCharge = 3,
+    Heal = 4,
+    Dance = 5,
+    Bless = 6,
+    AttackWait = 7,
+    Overlap = 8,
+    Summon = 9,
+}
+
+#[unity2::class(namespace = "", name = "GodData.FlagField")]
+#[parent(BitFieldTemplate32<GodDataFlags>)]
+pub struct GodDataFlagField {}
+
+bitflags::bitflags! {
+    #[repr(transparent)]
+    #[derive(Clone, Copy, PartialEq, Eq, Hash, Debug)]
+    pub struct GodDataFlags: i32 {
+        const NoAddExp = 1 << 0;
+        const EnableRingList = 1 << 1;
+        const UnitIconDarkness = 1 << 2;
+        const GaugeDarkness = 1 << 3;
+        const OnlyEngageWeapon = 1 << 4;
+        const Armlet = 1 << 5;
+        const Hero = -2147483648; // i32::MIN
+    }
+}
+
+impl ClassIdentity for GodDataFlags {
+    const NAMESPACE: &'static str = "";
+    const NAME: &'static str = "GodData.Flags";
+
+    fn class() -> unity2::Class {
+        Class::lookup(Self::NAMESPACE, Self::NAME)
+    }
+}
+
+#[unity2::enumeration(namespace = "", name = "GodData.RelianceLevel")]
+#[repr(i32)]
+pub enum GodDataRelianceLevel {
+    D = 0,
+    C = 1,
+    B = 2,
+    A = 3,
+    S = 4,
 }

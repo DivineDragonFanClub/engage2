@@ -197,7 +197,11 @@ impl EventScript {
 pub struct ScriptSystem {}
 
 #[unity2::class(namespace = "App")]
-pub struct ScriptUtil {}
+pub struct ScriptUtil {
+    #[static_field]
+    #[rename(name = "MAX_CURSOR_STACK")]
+    pub max_cursor_stack: i32
+}
 
 #[unity2::methods]
 impl ScriptUtil {
